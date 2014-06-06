@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var util = require('util');
 var webrtc = require('webrtcsupport');
 var SJJ = require('sdp-jingle-json');
@@ -92,7 +91,9 @@ PeerConnection.prototype.processIce = function (update, cb) {
     var self = this;
 
     if (update.contents) {
-        var contentNames = _.pluck(this.remoteDescription.contents, 'name');
+        var contentNames = [].map.call(this.remoteDescription.contents, function (desc) {
+            return desc.name;
+        });
         var contents = update.contents;
 
         contents.forEach(function (content) {
@@ -167,7 +168,7 @@ PeerConnection.prototype.offer = function (constraints, cb) {
                         self.localDescription = jingle;
 
                         // Save ICE credentials
-                        _.each(jingle.contents, function (content) {
+                        [].forEach.call(jingle.contents, function (content) {
                             var transport = content.transport || {};
                             if (transport.ufrag) {
                                 self.config.ice[content.name] = {
@@ -325,7 +326,7 @@ PeerConnection.prototype._onIce = function (event) {
         if (self.config.useJingle) {
             if (!self.config.ice[ice.sdpMid]) {
                 var jingle = SJJ.toSessionJSON(self.pc.localDescription.sdp, self.config.isInitiator ? 'initiator' : 'responder');
-                _.each(jingle.contents, function (content) {
+                [].forEach.call(jingle.contents, function (content) {
                     var transport = content.transport || {};
                     if (transport.ufrag) {
                         self.config.ice[content.name] = {
