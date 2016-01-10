@@ -1,11 +1,11 @@
 {
   "name": "rtcpeerconnection",
-  "version": "2.3.2",
+  "version": "4.1.0",
   "description": "A tiny browser module that normalizes and simplifies the API for WebRTC peer connections.",
   "main": "rtcpeerconnection.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HenrikJoreteg/RTCPeerConnection"
+    "url": "https://github.com/otalk/RTCPeerConnection"
   },
   "keywords": [
     "browser",
@@ -16,15 +16,20 @@
   "author": "Henrik Joreteg <henrik@andyet.net>",
   "license": "MIT",
   "dependencies": {
+    "sdp-jingle-json": "2.x",
+    "traceablepeerconnection": "^1.0.0",
     "wildemitter": "1.x",
-    "webrtcsupport": "0.7.x",
-    "traceablepeerconnection": "0.2.x",
-    "sdp-jingle-json": "1.x"
+    "webrtc-adapter-test": "^0.2.3"
   },
   "devDependencies": {
-    "browserify": "2.x",
-    "precommit-hook": "0.3.x",
-    "tape": "2.x"
+    "browserify": "^10.2.1",
+    "precommit-hook": "1.x",
+    "tape": "^4.0.0",
+    "travis-multirunner": "^3.0.0",
+    "testling": "^1.7.1"
+  },
+  "scripts": {
+    "test-travis": "test/run-tests"
   },
   "testling": {
     "files": "test/*.js",

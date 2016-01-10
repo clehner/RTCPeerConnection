@@ -3,7 +3,7 @@
 
 ## What is this?
 
-A tiny browser module that gives normalizes and simplifies the API for WebRTC peer connections.
+A tiny browser module that normalizes and simplifies the API for WebRTC peer connections.
 
 It gives us a cleaner (cross-browser) way to handle offer/answer and is based on an event emitter.
 
@@ -37,7 +37,7 @@ var pc = new PeerConnection({config servers as usual}, {constraints as to regula
 ### Events
 
 
-Unlike stock Peer Connections this inherits from a generic event emitter. Powered by [WildEmitter](http://github.com/henrikjoreteg/wildemitter) which has a very familiar API if you're used to node.js/jQUery/Backbone but also includes a wildcard handler so you can easily debug events. Just do `emitter.on('*')` to log them out or whatnot.
+Unlike stock Peer Connections this inherits from a generic event emitter. Powered by [WildEmitter](http://github.com/henrikjoreteg/wildemitter) which has a very familiar API if you're used to node.js/jQuery/Backbone but also includes a wildcard handler so you can easily debug events. Just do `emitter.on('*')` to log them out or whatnot.
 
 But instead of doing `pc.onicecandidate = function () {}` on a peer connection you listen for events like this:
 
@@ -56,22 +56,22 @@ pc.on('endOfCandidates', function () {
 });
 
 // remote stream added
-pc.on('streamAdded', function (stream) {
-    // do something with the remote stream
+pc.on('addStream', function (event) {
+    // do something with event.stream
     // probably attach it to a <video> element
     // and play it.
 });
 
 // remote stream removed
-pc.on('streamRemoved', function (stream) {
+pc.on('removeStream', function (event) {
     // remote stream removed
     // now you could hide/disable removed video
 });
 
 // you can chose to listen for events for 
 // offers and answers instead, if you prefer 
-pc.on('answer', function (answer) { ... });
-pc.on('offer', function (offer) { ... });
+pc.on('answer', function (err, answer) { ... });
+pc.on('offer', function (err, offer) { ... });
 
 // on peer connection close
 pc.on('close', function () { ... });
@@ -93,8 +93,8 @@ var connection = new RealTimeConnection(); // could be socket.io or whatever
 
 
 // create an offer
-pc.offer(function (offer) {
-    connection.send('offer', offer)
+pc.offer(function (err, offer) {
+    if (!err) connection.send('offer', offer)
 });
 
 // you can also optionally pass in constraints
